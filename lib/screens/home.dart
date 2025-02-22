@@ -14,25 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: GestureDetector(
-              onTap: () async {
-                await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const RegisterUserScreen(),
-                  )
-                );
-              },
-              child: const Icon(
-                Icons.person_add_alt_1_rounded,
-                size: 30,
-              ),
-            ),
-          )
-        ],
-      ),
+        ),
       body: const Center(
         child: Text('Welcome to SEIM Canary'),
       ),

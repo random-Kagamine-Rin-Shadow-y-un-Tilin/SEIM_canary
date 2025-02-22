@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:seim_canary/models/user_model.dart';
 import 'package:seim_canary/services/mongo_service.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
@@ -99,7 +100,19 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                 controller: _phoneController,
                 decoration: const InputDecoration(labelText: 'Teléfono'),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? "Campo requerido" : null,
+                maxLength: 10,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10),
+                ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Ingrese un número de teléfono";
+                  } else if (value.length < 10) {
+                    return "El número debe tener 10 dígitos";
+                  }
+                  return null;
+                }
               ),
               TextFormField(
                 controller: _passwordController,

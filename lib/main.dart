@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seim_canary/screens/home.dart';
+import 'package:seim_canary/screens/login.dart';
 import 'package:seim_canary/services/mongo_service.dart';
 import 'package:seim_canary/screens/register.dart';
 
@@ -18,7 +19,7 @@ void main() async {
     Widget build(BuildContext context) {
       return const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
+        home: LoginScreen(),
     );
   }   
 }

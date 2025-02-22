@@ -21,7 +21,7 @@ class MongoService {
           'mongodb+srv://diegonicolas:lkHF513apl5CmJBE@cluster0.xqp2g.mongodb.net/SEIM_prueba?retryWrites=true&w=majority&appName=Cluster0');
       await _db.open();
       _userCollection = _db.collection('Users');
-      print('Conectado a MongoDB Atlas');
+      print('Connected to MongoDB Atlas');
     } on SocketException catch (e) {
       print('Error de conexión: $e');
       rethrow;
