@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:seim_canary/screens/Users/edit_user.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
