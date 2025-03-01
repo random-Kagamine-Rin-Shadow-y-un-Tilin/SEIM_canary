@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:seim_canary/screens/home.dart';
 import 'package:seim_canary/screens/register.dart';
 import 'package:seim_canary/services/mongo_service.dart';
+import 'dart:async';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -64,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
+              style: const TextStyle(color: Colors.white),
               controller: _emailController,
               decoration: const InputDecoration(
                 labelText: 'Email',
@@ -72,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 16.0),
             TextField(
+              style: const TextStyle(color: Colors.white),
               controller: _passwordController,
               decoration: const InputDecoration(
                 labelText: 'Password',

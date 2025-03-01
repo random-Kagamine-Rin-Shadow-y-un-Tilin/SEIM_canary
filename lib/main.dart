@@ -3,6 +3,7 @@ import 'package:seim_canary/screens/home.dart';
 import 'package:seim_canary/screens/login.dart';
 import 'package:seim_canary/services/mongo_service.dart';
 import 'package:seim_canary/screens/register.dart';
+import 'package:seim_canary/widgets/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,8 +18,9 @@ void main() async {
 
     @override
     Widget build(BuildContext context) {
-      return const MaterialApp(
+      return MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: themeMain(),
         home: LoginScreen(),
     );
   }   
