@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seim_canary/screens/home.dart';
-import 'package:seim_canary/screens/register.dart';
+import 'package:seim_canary/screens/Users/register.dart';
 import 'package:seim_canary/services/mongo_service.dart';
 
 class LoginScreen extends StatefulWidget {

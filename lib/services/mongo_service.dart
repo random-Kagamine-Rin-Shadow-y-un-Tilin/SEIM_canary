@@ -42,6 +42,36 @@ class MongoService {
     }
   } 
 
+// Verificar credenciales de un usuario para login
+Future<UserModel?> loginUser(String email, String password) async {
+  try {
+    var user = await _userCollection.findOne(mongo.where.eq('email', email).eq('password', password));
+    if (user != null) {
+      return UserModel.fromJson(user);
+    } else {
+      return null;
+    } 
+  } catch(e) {
+    print('Error al iniciar sesión: $e');
+    rethrow;
+  }
+}
+
+// Obtener usuario por ID
+Future<UserModel?> getUserById(String id) async {
+  try {
+    var user = await _userCollection.findOne(mongo.where.eq('_id', mongo.ObjectId.fromHexString(id)));
+    if (user != null) {
+      return UserModel.fromJson(user);
+    } else {
+      return null;
+    }
+  } catch (e) {
+    print('Error al obtener usuario por ID: $e');
+    rethrow;
+  }
+}
+
   mongo.Db get db {
     if (!_db.isConnected) {
       throw StateError('Database is not connected');

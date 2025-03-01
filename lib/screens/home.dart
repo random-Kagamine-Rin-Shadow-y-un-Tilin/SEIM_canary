@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seim_canary/screens/register.dart';
+import 'package:seim_canary/screens/Users/edit_user.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,8 +15,12 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Home'),
         ),
-      body: const Center(
-        child: Text('Welcome to SEIM Canary'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ]
+          ),
       ),
     );
   }
