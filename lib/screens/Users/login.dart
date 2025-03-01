@@ -109,7 +109,7 @@ Future<void> _login() async {
           children: [
             // Campo de texto para el email
             TextField(
-              style: const TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.white),
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
@@ -121,7 +121,7 @@ Future<void> _login() async {
             const SizedBox(height: 16.0),
             // Campo de texto para la contraseña
             TextField(
-              style: const TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.white),
               controller: _passwordController,
               obscureText: true,
               decoration: const InputDecoration(
