@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seim_canary/screens/home.dart';
+import 'package:seim_canary/screens/home_page.dart';
 import 'package:seim_canary/screens/login.dart';
 import 'package:seim_canary/services/mongo_service.dart';
 import 'package:seim_canary/screens/register.dart';
@@ -21,8 +22,12 @@ void main() async {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeMain(),
-        home: LoginScreen(),
+        home: const LoginScreen(),
+        routes: {
+          '/home': (context) => const HomeScreen(),
+          '/home_page': (context) => HomePage(),
+          '/register': (context) => const RegisterUserScreen(),
+        },
     );
   }   
 }
-

@@ -43,7 +43,8 @@ ThemeData themeMain() {
         borderRadius: BorderRadius.circular(10),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.blue, width: 2),
+        borderSide:
+            const BorderSide(color: Color.fromARGB(255, 68, 26, 255), width: 2),
         borderRadius: BorderRadius.circular(10),
       ),
       border: OutlineInputBorder(
@@ -56,7 +57,10 @@ ThemeData themeMain() {
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color.fromARGB(255, 75, 75, 75),
         foregroundColor: const Color.fromARGB(255, 255, 255, 255),
-        textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
+        textStyle: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -69,6 +73,13 @@ ThemeData themeMain() {
         foregroundColor: const Color.fromARGB(255, 255, 255, 255),
         textStyle: const TextStyle(fontSize: 16),
       ),
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Color(0xFF2F4450), // Color de fondo del menú
+      selectedItemColor: Color.fromARGB(255, 71, 0, 119), // Color del ícono seleccionado
+      unselectedItemColor: Colors.grey, // Color de los íconos no seleccionados
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
     ),
   );
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:seim_canary/screens/home.dart';
+// import 'package:seim_canary/main.dart';
+// import 'package:seim_canary/screens/home.dart';
+import 'package:seim_canary/screens/home_page.dart';
 import 'package:seim_canary/screens/register.dart';
 import 'package:seim_canary/services/mongo_service.dart';
 import 'dart:async';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -26,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (userExists) {
       // Navigate to HomeScreen if login is successful
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        MaterialPageRoute(builder: (context) => HomePage()),
       );
     } else {
       // Show an error message if login fails
@@ -46,11 +47,9 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.only(right: 16.0),
             child: GestureDetector(
               onTap: () async {
-                await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const RegisterUserScreen(),
-                  )
-                );
+                await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const RegisterUserScreen(),
+                ));
               },
               child: const Icon(
                 Icons.person_add_alt_1_rounded,
@@ -85,6 +84,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(204, 56, 1, 129),
+              ),
               onPressed: _login,
               child: const Text('Login'),
             ),
