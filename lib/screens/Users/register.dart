@@ -18,6 +18,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false; // Variable para mostrar el indicador de carga
 
   @override
   void dispose() {
@@ -35,32 +36,48 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     return emailRegex.hasMatch(email);
   }
 
-  // Función para registrar usuario
-  void _insertUser() async {
-    if (!_formKey.currentState!.validate()) return;
+  // Función para verificar si el correo ya está registrado
+  Future<bool> _checkEmailExists(String email) async {
+    try {
+      final user = await MongoService().loginUser(email, '');
+      return user != null;
+    } catch (e) {
+      print('Error al verificar el correo: $e');
+      return false;
+    }
+  }
 
+  // Función para registrar usuario
+Future<void> _insertUser() async {
+  if (!_formKey.currentState!.validate()) return;
+
+  setState(() => _isLoading = true); // Mostrar el indicador de carga
+
+  try {
     String username = _usernameController.text.trim();
     String email = _emailController.text.trim();
-    int phone = int.parse(_phoneController.text.trim());
-    String password = UserModel.hashPassword(_passwordController.text.trim());
+    String phone = _phoneController.text.trim();
+    String password = UserModel.hashPassword(_passwordController.text.trim()); // Encriptar la contraseña
 
-    // Verificar si el usuario ya existe en la base de datos
-    bool userExists = await MongoService().userExists(email);
-    if (userExists) {
+    // Verificar si el correo ya está registrado
+    bool emailExists = await _checkEmailExists(email);
+    if (emailExists) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("El correo ya está registrado")),
       );
       return;
     }
 
+    // Crear el objeto UserModel
     var user = UserModel(
       id: mongo.ObjectId(),
       username: username,
       email: email,
       phone: phone,
-      password: password,
+      password: password, // Contraseña encriptada
     );
 
+    // Insertar el usuario en la base de datos
     await MongoService().addUser(user);
 
     if (!mounted) return;
@@ -68,7 +85,16 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
       const SnackBar(content: Text("Usuario registrado con éxito")),
     );
     Navigator.of(context).pop();
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Error al registrar el usuario: $e")),
+    );
+  } finally {
+    if (mounted) {
+      setState(() => _isLoading = false); // Ocultar el indicador de carga
+    }
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +125,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
               TextFormField(
                 controller: _phoneController,
                 decoration: const InputDecoration(labelText: 'Teléfono'),
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.phone,
                 maxLength: 10,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -112,7 +138,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                     return "El número debe tener 10 dígitos";
                   }
                   return null;
-                }
+                },
               ),
               TextFormField(
                 controller: _passwordController,
@@ -122,10 +148,12 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                     value!.length < 6 ? "Mínimo 6 caracteres" : null,
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _insertUser,
-                child: const Text('Registrar'),
-              ),
+              _isLoading
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: _insertUser,
+                      child: const Text('Registrar'),
+                    ),
             ],
           ),
         ),

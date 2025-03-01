@@ -31,52 +31,54 @@ class MongoService {
     }
   }
 
-//  Verifica si un usuario ya existe en la base de datos
-  Future<bool> userExists(String email) async {
-    try {
-        var user = await _userCollection.findOne(mongo.where.eq('email', email));
-        return user != null;
-    } catch (e) {
-      print('Error al verificar usuario: $e');
-      rethrow;
-    }
-  } 
-
-// Verificar credenciales de un usuario para login
-Future<UserModel?> loginUser(String email, String password) async {
+  // Verificar credenciales de un usuario para login
+Future<UserModel?> loginUser(String email, String encryptedPassword) async {
   try {
-    var user = await _userCollection.findOne(mongo.where.eq('email', email).eq('password', password));
+    // Buscar al usuario por email
+    var user = await _userCollection.findOne(mongo.where.eq('email', email));
+
     if (user != null) {
-      return UserModel.fromJson(user);
-    } else {
-      return null;
-    } 
-  } catch(e) {
+      // Obtener la contraseña almacenada en la base de datos
+      final storedPassword = user['password'];
+
+      // Comparar las contraseñas encriptadas
+      if (storedPassword == encryptedPassword) {
+        return UserModel.fromJson(user); // Devuelve el usuario si las contraseñas coinciden
+      }
+    }
+    return null; // Devuelve null si el usuario no existe o las contraseñas no coinciden
+  } catch (e) {
     print('Error al iniciar sesión: $e');
     rethrow;
   }
 }
 
-// Obtener usuario por ID
-Future<UserModel?> getUserById(String id) async {
-  try {
-    var user = await _userCollection.findOne(mongo.where.eq('_id', mongo.ObjectId.fromHexString(id)));
-    if (user != null) {
-      return UserModel.fromJson(user);
-    } else {
-      return null;
+  // Obtener usuario por ID
+  Future<UserModel?> getUserById(String id) async {
+    try {
+      var user = await _userCollection.findOne(mongo.where.eq('_id', mongo.ObjectId.fromHexString(id)));
+      if (user != null) {
+        return UserModel.fromJson(user);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error al obtener usuario por ID: $e');
+      rethrow;
     }
-  } catch (e) {
-    print('Error al obtener usuario por ID: $e');
-    rethrow;
   }
-}
 
   mongo.Db get db {
     if (!_db.isConnected) {
       throw StateError('Database is not connected');
     }
     return _db;
+  }
+
+  Future<List<UserModel>> getUsers() async {
+    final collection = _db.collection('Users');
+    final users = await collection.find().toList();
+    return users.map((user) => UserModel.fromJson(user)).toList();
   }
 
   Future<void> addUser(UserModel user) async {

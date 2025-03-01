@@ -1,29 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:seim_canary/models/user_model.dart';
+import 'package:seim_canary/screens/Users/edit_user.dart';
 import 'package:seim_canary/screens/home.dart';
-import 'package:seim_canary/screens/login.dart';
-import 'package:seim_canary/screens/register.dart';
+import 'package:seim_canary/screens/Users/login.dart';
 
 class HomePage extends StatefulWidget {
+  final UserModel user;
+
+  const HomePage({super.key, required this.user});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  // Índice para cambiar las páginas
   int _selectedIndex = 0;
+  late List<Widget> _widgetOptions;
+  late UserModel _user; // Variable de estado para el usuario
 
-  // Lista de widgets para mostrar en el cuerpo
-  static const List<Widget> _widgetOptions = <Widget>[
-    //agregar las screens que se quieran mostrar
-    HomeScreen(),
-    LoginScreen(),
-    RegisterUserScreen(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _user = widget.user; // Inicializa la variable de estado con el usuario proporcionado
+    _setupScreens();
+  }
 
-  // Método para cambiar de página cuando se selecciona una opción
+  void _setupScreens() {
+    setState(() {
+      _widgetOptions = [
+        HomeScreen(),
+        LoginScreen(),
+        EditUserScreen(
+          user: _user, // Usa la variable de estado
+          onUserUpdated: _onUserUpdated,
+        ),
+      ];
+    });
+  }
+
+  void _onUserUpdated(UserModel updatedUser) {
+    setState(() {
+      _user = updatedUser; // Actualiza la variable de estado
+    });
+  }
+
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; // Cambia el índice
+      _selectedIndex = index;
     });
   }
 
@@ -34,13 +57,11 @@ class _HomePageState extends State<HomePage> {
         title: const Text('SEIM'),
       ),
       body: Center(
-        child: _widgetOptions
-            .elementAt(_selectedIndex), // Muestra la página correspondiente
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      // Implementación del BottomNavigationBar
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex, // Indica el ítem seleccionado
-        onTap: _onItemTapped, // Llama a la función cuando se selecciona un ítem
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
