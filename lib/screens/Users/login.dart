@@ -15,6 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false; // Variable para mostrar el indicador de carga
+  bool _isObscure = true;
 
   @override
   void initState() {
@@ -30,48 +31,49 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-Future<void> _login() async {
-  final email = _emailController.text.trim();
-  final password = _passwordController.text.trim();
+  Future<void> _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
 
-  // Validar que los campos no estén vacíos
-  if (email.isEmpty || password.isEmpty) {
-    _showSnackBar('Por favor, ingrese email y contraseña');
-    return;
-  }
+    // Validar que los campos no estén vacíos
+    if (email.isEmpty || password.isEmpty) {
+      _showSnackBar('Por favor, ingrese email y contraseña');
+      return;
+    }
 
-  setState(() => _isLoading = true); // Mostrar el indicador de carga
+    setState(() => _isLoading = true); // Mostrar el indicador de carga
 
-  try {
-    // Encriptar la contraseña ingresada
-    final encryptedPassword = UserModel.hashPassword(password);
+    try {
+      // Encriptar la contraseña ingresada
+      final encryptedPassword = UserModel.hashPassword(password);
 
-    // Intentar iniciar sesión usando el método loginUser de MongoService
-    final userModel = await MongoService().loginUser(email, encryptedPassword);
+      // Intentar iniciar sesión usando el método loginUser de MongoService
+      final userModel =
+          await MongoService().loginUser(email, encryptedPassword);
 
-    if (userModel != null) {
-      // Si las credenciales son correctas, navegar a HomePage
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => HomePage(user: userModel),
-          ),
-        );
+      if (userModel != null) {
+        // Si las credenciales son correctas, navegar a HomePage
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => HomePage(user: userModel),
+            ),
+          );
+        }
+      } else {
+        // Si las credenciales son incorrectas, mostrar un mensaje
+        _showSnackBar('Email o contraseña incorrectos');
       }
-    } else {
-      // Si las credenciales son incorrectas, mostrar un mensaje
-      _showSnackBar('Email o contraseña incorrectos');
-    }
-  } catch (e) {
-    // Manejar errores durante el inicio de sesión
-    _showSnackBar('Error al iniciar sesión: $e');
-  } finally {
-    // Ocultar el indicador de carga
-    if (mounted) {
-      setState(() => _isLoading = false);
+    } catch (e) {
+      // Manejar errores durante el inicio de sesión
+      _showSnackBar('Error al iniciar sesión: $e');
+    } finally {
+      // Ocultar el indicador de carga
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
-}
 
   // Método para mostrar un SnackBar con mensajes
   void _showSnackBar(String message) {
@@ -123,12 +125,20 @@ Future<void> _login() async {
             TextField(
               style: const TextStyle(color: Colors.white),
               controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.lock),
-              ),
+              obscureText: _isObscure,
+              decoration: InputDecoration(
+                  labelText: 'Password',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.lock),
+                  suffixIcon: IconButton(
+                      icon: Icon(
+                        _isObscure ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isObscure = !_isObscure;
+                        });
+                      })),
             ),
             const SizedBox(height: 16.0),
             // Botón de inicio de sesión o indicador de carga

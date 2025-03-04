@@ -97,7 +97,7 @@ Future<void> _insertUser() async {
 }
 
   @override
-  Widget build(BuildContext context) {
+    Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Registrar Usuario'),
@@ -108,13 +108,17 @@ Future<void> _insertUser() async {
           key: _formKey,
           child: Column(
             children: [
+              const SizedBox(height: 16),
               TextFormField(
+                style: const TextStyle(color: Colors.white),
                 controller: _usernameController,
                 decoration:
                     const InputDecoration(labelText: 'Nombre de Usuario'),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
+              const SizedBox(height: 16),
               TextFormField(
+                style: const TextStyle(color: Colors.white),
                 controller: _emailController,
                 decoration:
                     const InputDecoration(labelText: 'Correo Electrónico'),
@@ -122,7 +126,9 @@ Future<void> _insertUser() async {
                     ? "Campo requerido"
                     : (_isValidEmail(value) ? null : "Email inválido"),
               ),
+              const SizedBox(height: 16),
               TextFormField(
+                style: const TextStyle(color: Colors.white),
                 controller: _phoneController,
                 decoration: const InputDecoration(labelText: 'Teléfono'),
                 keyboardType: TextInputType.phone,
@@ -141,13 +147,14 @@ Future<void> _insertUser() async {
                 },
               ),
               TextFormField(
+                style: const TextStyle(color: Colors.white),
                 controller: _passwordController,
                 decoration: const InputDecoration(labelText: 'Contraseña'),
                 obscureText: true,
                 validator: (value) =>
                     value!.length < 6 ? "Mínimo 6 caracteres" : null,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               _isLoading
                   ? const CircularProgressIndicator()
                   : ElevatedButton(
