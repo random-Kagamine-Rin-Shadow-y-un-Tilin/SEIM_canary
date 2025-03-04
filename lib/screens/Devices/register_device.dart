@@ -7,7 +7,7 @@ class RegisterDeviceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register Device'),
+        title: const Text('Dispositivos'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -16,7 +16,7 @@ class RegisterDeviceScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text(
-              "Oh, It looks that you haven't added a device, try to add one (This option could be disabled for some canary versions.)",
+              "Oh, It looks that you haven't added a device, try to add one! (This option could be disabled for some canary versions.)",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18),
             ),
