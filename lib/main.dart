@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:seim_canary/screens/Users/login.dart';
-import 'package:seim_canary/services/mongo_service.dart';
-import 'package:seim_canary/screens/home.dart';
-import 'package:seim_canary/screens/home_page.dart';
-import 'package:seim_canary/screens/Users/register.dart';
-import 'package:seim_canary/widgets/theme.dart';
-import 'package:seim_canary/models/user_model.dart';
+import 'package:seim_canary/screens/Devices/register_device.dart';
+import 'screens/Users/login.dart';
+import 'services/mongo_service.dart';
+import 'screens/home.dart';
+import 'screens/home_page.dart';
+import 'screens/Users/register.dart';
+import 'widgets/theme.dart';
+import 'models/user_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,8 @@ class MainApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) => HomePage(user: user));
           case '/register':
             return MaterialPageRoute(builder: (context) => const RegisterUserScreen());
+          case '/dispositivos:':
+            return MaterialPageRoute(builder: (context) => const RegisterDeviceScreen());
           default:
             return MaterialPageRoute(builder: (context) => const LoginScreen());
         }

@@ -4,7 +4,6 @@ import 'package:seim_canary/screens/Devices/register_device.dart';
 import 'package:seim_canary/screens/Users/edit_user.dart';
 import 'package:seim_canary/screens/home.dart';
 
-
 class HomePage extends StatefulWidget {
   final UserModel user;
 
@@ -22,7 +21,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _user = widget.user; // Inicializa la variable de estado con el usuario proporcionado
+    _user = widget
+        .user; // Inicializa la variable de estado con el usuario proporcionado
     _setupScreens();
   }
 
@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
       _widgetOptions = [
         HomeScreen(),
         RegisterDeviceScreen(),
+        HomeScreen(),
         EditUserScreen(
           user: _user, // Usa la variable de estado
           onUserUpdated: _onUserUpdated,
@@ -63,14 +64,19 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        backgroundColor: const Color.fromARGB(255, 53, 53, 53), // Fondo de la barra de navegación
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Inicio',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Configuraciones',
+            icon: Icon(Icons.devices),
+            label: 'Dispositivos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.electric_bolt),
+            label: 'Consumo',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
